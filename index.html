@@ -3,12 +3,120 @@
   <head>
  
     <meta charset="utf-8" />
+    <style>
+      body {
+          margin: 0;
+          background-color: #000;
+          color: #fff;
+          font-family: Helvetica, Arial, sans-serif;
+      }
+      canvas {
+          display: block;
+      }
+      footer{
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          box-sizing: border-box; 
+          background-color: #000;
+          width: 100vw;
+          padding: 20px;
+          text-align: right;
+          font-size: 18px;
+          color: #24baa7;
+      }
+      #dis {
+        
+          background-color: #000;
+          font-size: 18px;
+          color: #7a077d;
+      }
+      footer a, footer a:hover, footer a:active {
+          color: #24baa7;
+      }
+  </style>
+
 
   </head>
   <body>
 
-<iframe style="width:640px;height:480px;border:0px;" src="https://cables.gl/view/627812d03107bab41153b666"></iframe>
-  </body>
+    <canvas id="glcanvas" width="100vw" height="100vh"></canvas>
+    <footer id="footerr">
+      <button id="dis" onclick="dontshow()">  F U L L S C R E E N  </button>
+        <!-- we would greatly appreciate if you link cables somewhere on your site! and tell us your website! thanks <3 :) -->
+    </footer>
+
+    <libs/>
+    <script type="text/javascript" src="js/patch.js"></script>
+
+    <script>
+        /* Get the documentElement (<html>) to display the page in fullscreen */
+        var elem = document.documentElement;
+
+        /* View in fullscreen */
+        function openFullscreen() {
+        if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+        elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+        elem.msRequestFullscreen();
+        }
+        }
+
+        /* Close fullscreen */
+        function closeFullscreen() {
+        if (document.exitFullscreen) {
+        document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+        document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+        document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+        document.msExitFullscreen();
+        }
+        }
+
+        function dontshow () {
+          document.getElementById("footerr").style.display = "none";
+          openFullscreen();
+        }
+        /**
+         * Called when there was a cables error.
+         * @param {string} errId - ID of the error, e.g. 'NO_WEBGL' or 'NO_WEBAUDIO'
+         *                         when the browser does not support the used APIs
+         * @param {string} errMsg - The error message
+         */
+        function showError(errId, errMsg) {
+            alert('An error occured: ' + errId + ', ' + errMsg);
+        }
+
+        function patchInitialized() {
+            // You can now access the patch object (CABLES.patch), register variable watchers and so on
+        }
+
+        function patchFinishedLoading() {
+            // The patch is ready now, all assets have been loaded
+        }
+
+        document.addEventListener('DOMContentLoaded', function(event) {
+            CABLES.patch = new CABLES.Patch({
+                patch: CABLES.exportedPatch,
+                prefixAssetPath: '',
+                glCanvasId: 'glcanvas',
+                glCanvasResizeToWindow: true,
+                onError: showError,
+                onPatchLoaded: patchInitialized,
+                onFinishedLoading: patchFinishedLoading,
+            });
+        });
+    </script>
+
+
+<!--<iframe style="width:640px;height:480px;border:0px;" src="https://cables.gl/view/627812d03107bab41153b666"></iframe>
+--> </body>
 </html>
 
 
